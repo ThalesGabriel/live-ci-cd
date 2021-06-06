@@ -3,11 +3,10 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"time"
 )
 
 func greet(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello World! Since today and forever I'm a full cycle developer", time.Now())
+	fmt.Println("Since today and forever I'm a full cycle developer")
 }
 
 func main() {
