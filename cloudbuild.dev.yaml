@@ -1,9 +1,9 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build','-t','gcr.io/fullcycle-exemplos/live-ci-cd:latest', '-t', 'gcr.io/fullcycle-exemplos/live-ci-cd:$SHORT_SHA','.']
+    args: ['build','-t','gcr.io/teste-cd-316012/live-ci-cd:latest', '-t', 'gcr.io/fullcycle-exemplos/live-ci-cd:$SHORT_SHA','.']
 
   - name: 'docker'
-    args: ['run','-d','--name','goapp','gcr.io/fullcycle-exemplos/live-ci-cd:latest']
+    args: ['run','-d','--name','goapp','gcr.io/teste-cd-316012/live-ci-cd:latest']
 
   - name: 'docker'
     args: ['exec','goapp','go','test']
