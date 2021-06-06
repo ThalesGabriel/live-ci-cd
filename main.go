@@ -6,7 +6,7 @@ import (
 )
 
 func greet(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Since today and forever I'm a full cycle developer")
+	fmt.Fprintf(w, "Hello World! %s", "Since today and forever I'm a full cycle developer")
 }
 
 func main() {
