@@ -1,27 +1,30 @@
 steps:
-    - name: 'gcr.io/cloud-builders/docker'
-      args: ['build','-t','gcr.io/teste-cd-316012/live-ci-cd:latest:latest', '-t', 'gcr.io/teste-cd-316012/live-ci-cd:latest:$SHORT_SHA','.']
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build','-t','gcr.io/teste-cd-316012/live-ci-cd:latest', '-t', 'gcr.io/teste-cd-316012/live-ci-cd:$SHORT_SHA','.']
 
-    - name: 'docker'
-      args: ['run','-d','--name','goapp','gcr.io/teste-cd-316012/live-ci-cd:latest:latest']
+  - name: 'docker'
+    args: ['run','-d','--name','goapp','gcr.io/teste-cd-316012/live-ci-cd:latest']
 
-    - name: 'docker'
-      args: ['exec','goapp','go','test']
+  - name: 'docker'
+    args: ['exec','goapp','go','test']
 
-    - name: 'docker'
-      args: ['push','gcr.io/teste-cd-316012/live-ci-cd:latest:latest']
+  - name: 'docker'
+    args: ['push','gcr.io/teste-cd-316012/live-ci-cd:latest']
 
-    - name: 'docker'
-      args: ['push','gcr.io/teste-cd-316012/live-ci-cd:latest:$SHORT_SHA']
+  - name: 'docker'
+    args: ['push','gcr.io/teste-cd-316012/live-ci-cd:$SHORT_SHA']
 
-    - name: 'gcr.io/cloud-builders/kubectl'
-      args: [
-        'set',
-        'image',
-        'deployment',
-        'goapp',
-        'goapp=gcr.io/teste-cd-316012/live-ci-cd:latest:$SHORT_SHA'
-      ]
-      env:
-      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-c'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=fullcycle'
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['run','deploy','go-cloudrun','--image','gcr.io/teste-cd-316012/live-ci-cd:$SHORT_SHA','--region','us-central1','--platform','managed','--allow-unauthenticated']
+
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: [
+      'set',
+      'image',
+      'deployment',
+      'goapp',
+      'goapp=gcr.io/teste-cd-316012/live-ci-cd:latest'
+    ]
+    env:
+    - 'CLOUDSDK_COMPUTE_ZONE=us-central1-c'
+    - 'CLOUDSDK_CONTAINER_CLUSTER=cluster-1'
